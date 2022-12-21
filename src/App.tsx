@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import TaskItem from "./components/taskItem";
 import TaskList from "./components/taskList";
@@ -11,15 +11,17 @@ function App() {
   };
   const [count, setCount] = useState(0);
   const [todos, setTodos] = useState([localTodo]);
-  const [todoToUpdate, setTodoToUpdate] = useState({
-    index: -1,
-    title: "",
-    done: false,
-  });
-  const addTask = (item: any) => {
+  const [todoForm, setTodoToForm] = useState("");
+  const [indexForm, setIndexForm] = useState(-1);
+  const addTask = (item: any, index: any) => {
     let lTodo = [...todos];
-    lTodo.push({ title: item.title, done: false });
-    setTodos(lTodo);
+    if (index != -1) {
+      lTodo[index].title = item;
+      setTodos(lTodo);
+    } else {
+      lTodo.push({ title: item, done: false });
+      setTodos(lTodo);
+    }
   };
   const deleteTask = (index: number) => {
     let lTodo = [...todos];
@@ -27,13 +29,20 @@ function App() {
     setTodos(lTodo);
   };
   const editTask = (index: number, title: string) => {
-    setTodoToUpdate({ index: index, title: title, done: false });
+    setIndexForm(index);
+    setTodoToForm(title);
   };
 
   return (
     <div className="flex  flex-col items-center w-full">
       <h1 className="text-3xl text-gray-800 py-8">Todo app</h1>
-      <Todoform addTask={addTask} dataToUpdate={todoToUpdate}></Todoform>
+      <Todoform
+        addTask={addTask}
+        setTodoToForm={setTodoToForm}
+        todoForm={todoForm}
+        indexForm={indexForm}
+        setIndexForm={setIndexForm}
+      ></Todoform>
       <TaskList
         taskArray={todos}
         deleteTask={deleteTask}

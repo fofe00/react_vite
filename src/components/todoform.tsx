@@ -2,28 +2,34 @@ import { useState } from "react";
 
 const Todoform = ({
   addTask,
-  dataToUpdate,
+  setTodoToForm,
+  todoForm,
+  indexForm,
+  setIndexForm,
 }: {
   addTask: any;
-  dataToUpdate: any;
+  setTodoToForm: any;
+  todoForm: any;
+  indexForm: any;
+  setIndexForm: any;
 }) => {
-  const [task, setTask] = useState(dataToUpdate);
+  //  const [taskTitle, setTaskTitle] = useState(dataToUpdate);
 
   const updateTask = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
-    setTask({ title: event.target.value });
+    setTodoToForm(event.target.value);
   };
 
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    addTask(task);
-    setTask({ title: "", done: false, index: -1 });
+    addTask(todoForm, indexForm);
+    setTodoToForm("");
+    setIndexForm(-1);
   };
 
   return (
     <div className="w-full flex justify-center">
       <form onSubmit={handleSubmit}>
-        <input type="hidden" name="" value={task.index} />
         <input
           className="py-2 bg-slate-100 placeholder:text-slate-700 focus:border-2 focus:border-cyan-400 pl-2 rounded"
           placeholder="title name"
@@ -31,7 +37,7 @@ const Todoform = ({
           name="title"
           id="title"
           onChange={updateTask}
-          value={task.title}
+          value={todoForm}
         />
         <button
           type="submit"
